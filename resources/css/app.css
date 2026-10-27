@@ -1,129 +1,103 @@
-/* 1. Import Bootstrap */
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* 2. Pengaturan Dasar & Background */
 body {
-    background-color: #f4f7f6; /* Warna abu-abu kebiruan yang lembut */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     color: #333;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* 3. Kustomisasi Navbar */
 .navbar {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     padding: 1rem 0;
-}
-
-.navbar-brand {
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    font-size: 1.5rem;
-    color: #20c997 !important; /* Warna hijau cerah untuk brand */
 }
 
 .navbar-dark .navbar-nav .nav-link {
     font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
     transition: color 0.3s ease;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {
-    color: #20c997 !important; /* Warna hover menu */
-}
-
-/* 4. Kustomisasi Hero Section (Halaman Home) */
-.display-5 {
-    letter-spacing: -1px;
-    color: #1a1a1a;
-}
-
-.lead {
-    font-size: 1.15rem;
+    color: #20c997 !important;
 }
 
 .btn-success {
     background-color: #198754;
     border: none;
-    padding: 0.6rem 1.5rem;
     font-weight: 600;
     border-radius: 8px;
+    padding: 0.6rem 1.5rem;
     transition: all 0.3s ease;
 }
 
 .btn-success:hover {
     background-color: #146c43;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(25, 135, 84, 0.3);
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
 }
 
-/* 5. Kustomisasi Card Form Pendaftaran */
-.card {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Shadow yang lebih halus */
-}
-
-.card-body {
-    padding: 2.5rem !important;
-}
-
-/* 6. Kustomisasi Input Form */
-.form-label {
+.btn-outline-secondary {
+    border-radius: 8px;
     font-weight: 600;
-    color: #444;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-}
-
-.form-control, .form-select {
-    border-radius: 8px;
-    border: 1px solid #ced4da;
-    padding: 0.6rem 0.75rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #20c997;
-    box-shadow: 0 0 0 0.25rem rgba(32, 201, 151, 0.25);
-}
-
-/* 7. Kotak Notifikasi Availability (Ajax) */
-#availability {
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
     transition: all 0.3s ease;
 }
 
-/* Warna default (Pilih kursus) */
-.alert-secondary {
-    background-color: #e9ecef;
+.btn-outline-secondary:hover {
+    transform: translateY(-2px);
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+    font-weight: 600;
     color: #495057;
-    border: none;
+    font-size: 0.9rem;
 }
 
-/* Warna saat sukses dimuat (Hijau) */
-.alert-success {
-    background-color: #d1e7dd;
-    color: #0f5132;
-    border: none;
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid #ced4da;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-/* Warna saat error (Merah) */
-.alert-danger {
-    background-color: #f8d7da;
-    color: #842029;
-    border: none;
+.form-control:focus, .form-select:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.15);
+    background-color: #fff !important;
 }
 
-/* 8. Efek Animasi Sederhana */
-.fade-in {
-    animation: fadeIn 0.5s ease-in-out;
+#availability {
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.footer {
+    background-color: #ffffff;
+    color: #6c757d;
+}
+
+.footer a {
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #198754 !important;
 }

@@ -26,6 +26,6 @@ class HomeController extends Controller
             ],
         ];
 
-        return view('home', compact('siteName', 'featured'));
+        return view('beranda', compact('siteName', 'featured'));
     }
 }

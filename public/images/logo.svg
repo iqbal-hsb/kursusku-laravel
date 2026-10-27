@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100" width="100%" height="100%">
+  <g transform="translate(0, 10) scale(0.8)">
+    <rect width="100" height="100" rx="25" fill="#198754" />
+    <path d="M 30 25 L 30 75 L 40 75 L 40 55 L 60 75 L 75 75 L 50 48 L 72 25 L 57 25 L 40 45 L 40 25 Z" fill="#ffffff" />
+    <path d="M 65 35 L 80 35 L 80 20" fill="none" stroke="#20c997" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+  <text x="105" y="65" font-family="'Segoe UI', Arial, sans-serif" font-weight="800" font-size="42" fill="#198754" letter-spacing="-1">Kursus</text>
+  <text x="235" y="65" font-family="'Segoe UI', Arial, sans-serif" font-weight="800" font-size="42" fill="#343a40" letter-spacing="-1">Ku</text>
+</svg>

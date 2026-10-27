@@ -1,0 +1,1 @@
+<img src="{{ asset('images/hero.jpg') }}" alt="Belajar di KursusKu" class="img-fluid rounded-4 shadow-sm">
