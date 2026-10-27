@@ -55,7 +55,7 @@
                         @enderror
                     </div>
 
-                    <!-- Kotak Ajax -->
+                    <!-- Kotak untuk menampilkan sisa kursi -->
                     <div id="availability" class="alert alert-light border text-center py-3 rounded-3 mb-4">
                         <i class="bi bi-info-circle me-2"></i> Pilih kursus untuk melihat sisa kursi.
                     </div>
@@ -68,4 +68,44 @@
         </div>
     </div>
 </div>
+
+<!-- JAVASCRIPT NATIVE FETCH (PASTI JALAN TANPA JQUERY/VITE) -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectElement = document.getElementById('course_id');
+        const availabilityBox = document.getElementById('availability');
+
+        selectElement.addEventListener('change', function () {
+            const courseId = this.value;
+
+            if (!courseId) {
+                availabilityBox.className = 'alert alert-light border text-center py-3 rounded-3 mb-4';
+                availabilityBox.innerHTML = '<i class="bi bi-info-circle me-2"></i> Pilih kursus untuk melihat sisa kursi.';
+                return;
+            }
+
+            // Tampilkan Loading
+            availabilityBox.className = 'alert alert-light border text-center py-3 rounded-3 mb-4';
+            availabilityBox.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Memuat ketersediaan...';
+
+            // Fetch ke Route JSON Laravel
+            fetch('/courses/' + courseId + '/availability')
+                .then(response => {
+                    if (!response.ok) throw new Error('Gagal mengambil data');
+                    return response.json();
+                })
+                .then(data => {
+                    // Tampilkan sukses (Hijau)
+                    availabilityBox.className = 'alert alert-success border-success text-success text-center py-3 rounded-3 mb-4';
+                    availabilityBox.innerHTML = '<strong>' + data.remaining + ' kursi</strong> tersisa untuk <strong>' + data.course + '</strong>.';
+                })
+                .catch(error => {
+                    // Tampilkan gagal (Merah)
+                    console.error('Error:', error);
+                    availabilityBox.className = 'alert alert-danger border-danger text-danger text-center py-3 rounded-3 mb-4';
+                    availabilityBox.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i> Gagal memuat ketersediaan.';
+                });
+        });
+    });
+</script>
 @endsection
