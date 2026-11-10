@@ -39,3 +39,6 @@ Route::get('/courses/{course}/availability', function (int $course) {
 
     return response()->json($availability[$course]);
 })->name('courses.availability');
+use App\Http\Controllers\CourseController;
+
+Route::resource('courses', CourseController::class);
