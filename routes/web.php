@@ -42,3 +42,6 @@ Route::get('/courses/{course}/availability', function (int $course) {
 use App\Http\Controllers\CourseController;
 
 Route::resource('courses', CourseController::class);
+use App\Http\Controllers\EnrollmentController;
+
+Route::resource('enrollments', EnrollmentController::class)->only(['index', 'create', 'store']);
