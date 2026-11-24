@@ -2,16 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
-use App\Models\Course;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::latest()->get();
-        return view('courses.index', compact('courses'));
+        $search = trim((string) $request->query('q'));
+        $status = trim((string) $request->query('status'));
+        $allowedStatuses = ['open', 'closed', 'draft'];
+
+        $courses = Course::query()
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('code', 'like', "%{$search}%")
+                      ->orWhere('name', 'like', "%{$search}%");
+                });
+            })
+            ->when(in_array($status, $allowedStatuses, true), function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->orderBy('name')
+            ->paginate(10)
+            ->withQueryString();
+
+        // Jika request berasal dari Ajax (partial), kirim hanya bagian tabel
+        if ($request->boolean('partial')) {
+            return view('courses._results', compact('courses'));
+        }
+
+        return view('courses.index', compact('courses', 'search', 'status'));
     }
 
     public function create()
@@ -25,26 +48,22 @@ class CourseController extends Controller
         return to_route('courses.index')->with('success', 'Kursus berhasil ditambahkan.');
     }
 
-    // 1. Menampilkan Halaman Detail
     public function show(Course $course)
     {
         return view('courses.show', compact('course'));
     }
 
-    // 2. Menampilkan Form Edit
     public function edit(Course $course)
     {
         return view('courses.edit', compact('course'));
     }
 
-    // 3. Menyimpan Perubahan Data
     public function update(UpdateCourseRequest $request, Course $course)
     {
         $course->update($request->validated());
         return to_route('courses.show', $course)->with('success', 'Kursus berhasil diperbarui.');
     }
 
-    // 4. Menghapus Data
     public function destroy(Course $course)
     {
         $course->delete();

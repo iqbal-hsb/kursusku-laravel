@@ -80,6 +80,8 @@
             </div>
         </div>
     </footer>
+    <?php echo $__env->yieldPushContent('scripts'); ?>
+    
 
 </body>
 </html><?php /**PATH C:\laragon\www\kursusku-laravel\resources\views/layouts/app.blade.php ENDPATH**/ ?>
