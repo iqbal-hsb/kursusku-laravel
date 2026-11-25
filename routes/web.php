@@ -2,46 +2,55 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers\HomeController;
-
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
-Route::get('/pendaftaran', function () {
-    $courses = [
-        1 => ['name' => 'Web Dasar'],
-        2 => ['name' => 'PHP Dasar'],
-        3 => ['name' => 'Laravel Dasar'],
-    ];
-
-    return view('enrollments.create', compact('courses'));
-})->name('enrollments.create');
-
-Route::post('/pendaftaran/preview', function (Request $request) {
-    $request->validate([
-        'name' => ['required', 'string', 'min:3', 'max:100'],
-        'email' => ['required', 'email'],
-        'course_id' => ['required', 'integer'],
-    ]);
-
-    return back()
-        ->with('success', 'Form lolos validasi. Database akan ditambahkan pada pertemuan berikutnya.')
-        ->withInput();
-})->name('enrollments.preview');
-
-Route::get('/courses/{course}/availability', function (int $course) {
-    $availability = [
-        1 => ['course' => 'Web Dasar',     'remaining' => 12],
-        2 => ['course' => 'PHP Dasar',     'remaining' => 8],
-        3 => ['course' => 'Laravel Dasar', 'remaining' => 4],
-    ];
-
-    abort_unless(isset($availability[$course]), 404);
-
-    return response()->json($availability[$course]);
-})->name('courses.availability');
+use App\Models\Course;
 use App\Http\Controllers\CourseController;
-
-Route::resource('courses', CourseController::class);
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
-Route::resource('enrollments', EnrollmentController::class)->only(['index', 'create', 'store']);
+// =====================================================================
+// ROUTE PUBLIK (Bisa diakses tanpa login)
+// =====================================================================
+
+// 1. Route Home (Menampilkan Beranda & Katalog)
+Route::get('/', function () {
+    $courses = Course::all(); 
+    return view('home', compact('courses'));
+})->name('home');
+
+// 2. Route JSON Ketersediaan Kursi (Ajax)
+Route::get('/courses/{course}/availability', function (int $course) {
+    $courseData = Course::findOrFail($course);
+    return response()->json([
+        'course' => $courseData->name,
+        'remaining' => $courseData->quota 
+    ]);
+})->name('courses.availability');
+
+// 3. Route Autentikasi (Login, Logout, Lupa Password)
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+
+
+// =====================================================================
+// ROUTE TERPROTEKSI (Wajib Login)
+// =====================================================================
+Route::middleware('auth')->group(function () {
+
+    // A. Admin Dashboard & Profil
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile');
+    
+    // Route untuk memproses simpan perubahan profil
+    Route::put('/admin/profile', [AdminController::class, 'updateProfile'])->name('admin.profile.update');
+
+    // B. CRUD Kursus
+    Route::resource('courses', CourseController::class);
+
+    // C. Relasi Pendaftaran
+    Route::resource('enrollments', EnrollmentController::class)->only(['index', 'create', 'store']);
+
+});
